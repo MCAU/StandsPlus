@@ -1,4 +1,5 @@
 #gitignore
-*.xml
-target/*
+target/
+out/
+.idea/
 *.iml

@@ -4,3 +4,4 @@ version: ${project.version}
 description: ${project.description}
 depends: []
 author: Fupery
+api-version: 1.13

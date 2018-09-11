@@ -4,6 +4,7 @@ import me.Fupery.StandsPlus.GUI.StandMenu;
 import me.Fupery.StandsPlus.Recipe.StandKey;
 import me.Fupery.StandsPlus.StandsPlus;
 import me.Fupery.StandsPlus.Utils.SoundCompat;
+import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -31,7 +32,7 @@ public class PlayerInteractListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (StandKey.isValidMaterial(event.getPlayer().getItemInHand())) {
+        if (StandKey.isValidMaterial(event.getPlayer().getInventory().getItemInMainHand())) {
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 event.setCancelled(true);
             }
@@ -43,7 +44,7 @@ public class PlayerInteractListener implements Listener {
         if (event.getDamager() instanceof Player && checkValidStand(event.getEntity())) {
             Player player = ((Player) event.getDamager());
             ArmorStand stand = ((ArmorStand) event.getEntity());
-            if (StandKey.isValidMaterial(player.getItemInHand())) {
+            if (StandKey.isValidMaterial(player.getInventory().getItemInMainHand())) {
                 event.setCancelled(true);
                 Vector vecDiff = stand.getLocation().toVector().subtract(player.getLocation().toVector());
                 Vector vector = vecDiff.normalize().multiply(.1);
@@ -72,10 +73,10 @@ public class PlayerInteractListener implements Listener {
 
     private void handleClick(Cancellable event, Player player, Entity clicked) {
         if (!event.isCancelled() && checkValidStand(clicked)
-                && StandKey.isValidMaterial(player.getItemInHand())) {
+                && StandKey.isValidMaterial(player.getInventory().getItemInMainHand())) {
             event.setCancelled(true);
             new StandMenu(plugin, ((ArmorStand) clicked)).open(plugin, player);
-            SoundCompat.BLOCK_WOOD_BUTTON_CLICK_ON.play(player);
+            new SoundCompat(Sound.BLOCK_WOODEN_BUTTON_CLICK_ON).play(player);
         }
     }
 }

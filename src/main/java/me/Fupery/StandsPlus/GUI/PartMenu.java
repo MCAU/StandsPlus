@@ -8,6 +8,7 @@ import me.Fupery.StandsPlus.Utils.StandPart;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -117,7 +118,7 @@ class PartMenu extends InventoryMenu {
                     updateAngle(axis, shift);
                     updateButton();
                     updateInventory(plugin, player);
-                    SoundCompat.UI_BUTTON_CLICK.play(player);
+                    new SoundCompat(Sound.UI_BUTTON_CLICK).play(player);
                 });
             }
         }

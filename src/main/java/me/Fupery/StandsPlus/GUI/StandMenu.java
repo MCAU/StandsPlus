@@ -1,6 +1,5 @@
 package me.Fupery.StandsPlus.GUI;
 
-
 import me.Fupery.StandsPlus.GUI.API.InventoryMenu;
 import me.Fupery.StandsPlus.GUI.API.MenuButton;
 import me.Fupery.StandsPlus.StandsPlus;
@@ -9,6 +8,7 @@ import me.Fupery.StandsPlus.Utils.SoundCompat;
 import me.Fupery.StandsPlus.Utils.StandPart;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -153,7 +153,7 @@ public class StandMenu extends InventoryMenu {
             property.apply(stand, value);
             updateButton();
             updateInventory(plugin, player);
-            SoundCompat.UI_BUTTON_CLICK.play(player);
+            new SoundCompat(Sound.UI_BUTTON_CLICK).play(player);
         }
 
         void updateButton() {

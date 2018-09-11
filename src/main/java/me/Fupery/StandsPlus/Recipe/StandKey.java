@@ -1,17 +1,22 @@
 package me.Fupery.StandsPlus.Recipe;
 
+import me.Fupery.StandsPlus.StandsPlus;
 import me.Fupery.StandsPlus.Utils.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
 
 public class StandKey extends ItemStack {
+
+    private static final NamespacedKey key = new NamespacedKey(JavaPlugin.getPlugin(StandsPlus.class), "standsplus.standkey");
     private static String STAND_KEY = "§b§oStandKey";
 
     private StandKey() {
@@ -32,9 +37,9 @@ public class StandKey extends ItemStack {
     }
 
     public static void addRecipe() {
-        ShapedRecipe recipe = new ShapedRecipe(new StandKey());
+        ShapedRecipe recipe = new ShapedRecipe(key, new StandKey());
         recipe.shape(".w.", "sxs", ".w.");
-        recipe.setIngredient('w', Material.WEB);
+        recipe.setIngredient('w', Material.COBWEB);
         recipe.setIngredient('s', Material.SLIME_BALL);
         recipe.setIngredient('x', Material.TRIPWIRE_HOOK);
         Bukkit.addRecipe(recipe);
