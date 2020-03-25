@@ -34,3 +34,8 @@ english:
   - "§e•§6 Legs §e•"
   - "§aLeft-Click §7to rotate §aLeft Leg"
   - "§eRight-Click §7to rotate §eRight Leg"
+  
+  ARMS_BUTTON:
+  - "§e•§6 Arms §e•"
+  - "§aLeft-Click §7to rotate §aLeft Arm"
+  - "§eRight-Click §7to rotate §eRight Arm"
