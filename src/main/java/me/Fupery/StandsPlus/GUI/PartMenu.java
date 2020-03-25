@@ -26,7 +26,7 @@ class PartMenu extends InventoryMenu {
         super(parent, ChatColor.BOLD + part.fancyName(false), InventoryType.HOPPER);
         this.part = part;
         MenuButton[] buttons = new MenuButton[]{
-                new MenuButton.StaticButton(Material.SIGN, Lang.Array.POSE_MENU_HELP.messages()),
+                new MenuButton.StaticButton(Material.OAK_SIGN, Lang.Array.POSE_MENU_HELP.messages()),
                 new RotationButton(Axis.X), new RotationButton(Axis.Y), new RotationButton(Axis.Z),
                 new MenuButton.CloseButton(this)
         };
