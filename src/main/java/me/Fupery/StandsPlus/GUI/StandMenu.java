@@ -33,9 +33,11 @@ public class StandMenu extends InventoryMenu {
                 new PropertyButton(StandProperty.BASEPLATE),
                 new PartButton(Material.CHAINMAIL_HELMET, StandPart.HEAD),
                 new PropertyButton(StandProperty.ARMS),
-                new PartButton(Material.LEVER, StandPart.LEFT_ARM),
+                new PropertyButton(StandProperty.VISIBLE),
+                //new PartButton(Material.LEVER, StandPart.LEFT_ARM),
                 new PartButton(Material.CHAINMAIL_CHESTPLATE, StandPart.BODY),
-                new PartButton(Material.LEVER, StandPart.RIGHT_ARM),
+                new ArmButton(),
+                //new PartButton(Material.LEVER, StandPart.RIGHT_ARM),
                 new PropertyButton(StandProperty.GRAVITY),
                 new LegButton(),
                 new PropertyButton(StandProperty.SMALL)
@@ -101,6 +103,26 @@ public class StandMenu extends InventoryMenu {
         }
     }
 
+    private class ArmButton extends MenuButton {
+    	ArmButton() {
+    		super(Material.LEVER, Lang.Array.ARMS_BUTTON.messages());
+            ItemMeta meta = getItemMeta();
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            setItemMeta(meta);
+    	}
+
+		@Override
+		public void onClick(JavaPlugin plugin, Player player, ClickType click) {
+            switchingMenus = true;
+            if (click.isLeftClick()) {
+                new PartMenu(getMenu(), StandPart.LEFT_ARM).open(plugin, player);
+            } else if (click.isRightClick()) {
+                new PartMenu(getMenu(), StandPart.RIGHT_ARM).open(plugin, player);
+            }
+		}
+    }
+    
     private class LegButton extends MenuButton {
 
         LegButton() {
