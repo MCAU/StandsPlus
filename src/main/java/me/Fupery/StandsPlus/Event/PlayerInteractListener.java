@@ -68,7 +68,7 @@ public class PlayerInteractListener implements Listener {
     }
 
     private boolean checkValidStand(Entity entity) {
-        return entity.getType() == EntityType.ARMOR_STAND && ((ArmorStand) entity).isVisible();
+        return entity.getType() == EntityType.ARMOR_STAND /*&& ((ArmorStand) entity).isVisible()*/;
     }
 
     private void handleClick(Cancellable event, Player player, Entity clicked) {
