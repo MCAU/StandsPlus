@@ -31,17 +31,17 @@ public class PlayerInteractListener implements Listener {
     }
 
     @EventHandler
-	public void onPlayerMove(PlayerMoveEvent event) {
-		for(Entity armour : event.getPlayer().getNearbyEntities(25, 25, 25)) {
-			if(armour instanceof ArmorStand) {
-				if(StandKey.isValidMaterial(event.getPlayer().getInventory().getItemInMainHand())) {
-					((ArmorStand) armour).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 1000, 1));
-				} else {
-					((ArmorStand) armour).removePotionEffect(PotionEffectType.GLOWING);
-				}
-			}
+    public void onPlayerMove(PlayerMoveEvent event) {
+        for(Entity armour : event.getPlayer().getNearbyEntities(25, 25, 25)) {
+	    if(armour instanceof ArmorStand) {
+	        if(StandKey.isValidMaterial(event.getPlayer().getInventory().getItemInMainHand())) {
+		    ((ArmorStand) armour).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 1000, 1));
+		} else {
+		    ((ArmorStand) armour).removePotionEffect(PotionEffectType.GLOWING);
 		}
-	}
+	    }
+        }
+    }
     
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
