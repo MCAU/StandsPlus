@@ -17,6 +17,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 /**
@@ -31,23 +33,15 @@ public class PlayerInteractListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
-        for(Entity armour : event.getPlayer().getNearbyEntities(25, 25, 25)) {
-	    if(armour instanceof ArmorStand) {
-	        if(StandKey.isValidMaterial(event.getPlayer().getInventory().getItemInMainHand())) {
-		    ((ArmorStand) armour).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 1000, 1));
-		} else {
-		    ((ArmorStand) armour).removePotionEffect(PotionEffectType.GLOWING);
-		}
-	    }
-        }
-    }
-    
-    @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (StandKey.isValidMaterial(event.getPlayer().getInventory().getItemInMainHand())) {
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 event.setCancelled(true);
+                for(Entity armour : event.getPlayer().getNearbyEntities(10, 10, 10)) {
+                    if (armour instanceof ArmorStand) {
+                        ((ArmorStand) armour).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 40, 1));
+                    }
+                }
             }
         }
     }
