@@ -34,13 +34,11 @@ public class PlayerInteractListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (StandKey.isValidMaterial(event.getPlayer().getInventory().getItemInMainHand())) {
-            if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                event.setCancelled(true);
-                for(Entity armour : event.getPlayer().getNearbyEntities(10, 10, 10)) {
-                    if (armour instanceof ArmorStand) {
-                        ((ArmorStand) armour).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 40, 1));
-                    }
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && StandKey.handIsValidMaterial(event.getPlayer())) {
+            event.setCancelled(true);
+            for (Entity armour : event.getPlayer().getNearbyEntities(10, 10, 10)) {
+                if (armour instanceof ArmorStand) {
+                    ((ArmorStand) armour).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 40, 1));
                 }
             }
         }
@@ -51,7 +49,7 @@ public class PlayerInteractListener implements Listener {
         if (event.getDamager() instanceof Player && checkValidStand(event.getEntity())) {
             Player player = ((Player) event.getDamager());
             ArmorStand stand = ((ArmorStand) event.getEntity());
-            if (StandKey.isValidMaterial(player.getInventory().getItemInMainHand())) {
+            if (StandKey.handIsValidMaterial(player)) {
                 event.setCancelled(true);
                 Vector vecDiff = stand.getLocation().toVector().subtract(player.getLocation().toVector());
                 Vector vector = vecDiff.normalize().multiply(.1);
@@ -64,23 +62,22 @@ public class PlayerInteractListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         handleClick(event, event.getPlayer(), event.getRightClicked());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
         handleClick(event, event.getPlayer(), event.getRightClicked());
     }
 
     private boolean checkValidStand(Entity entity) {
-        return entity.getType() == EntityType.ARMOR_STAND /*&& ((ArmorStand) entity).isVisible()*/;
+        return entity.getType() == EntityType.ARMOR_STAND;
     }
 
     private void handleClick(Cancellable event, Player player, Entity clicked) {
-        if (!event.isCancelled() && checkValidStand(clicked)
-                && StandKey.isValidMaterial(player.getInventory().getItemInMainHand())) {
+        if (checkValidStand(clicked) && StandKey.handIsValidMaterial(player)) {
             event.setCancelled(true);
             new StandMenu(plugin, ((ArmorStand) clicked)).open(plugin, player);
             new SoundCompat(Sound.BLOCK_WOODEN_BUTTON_CLICK_ON).play(player);

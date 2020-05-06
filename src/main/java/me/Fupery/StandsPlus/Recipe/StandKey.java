@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -29,6 +30,10 @@ public class StandKey extends ItemStack {
         addUnsafeEnchantment(Enchantment.LOOT_BONUS_MOBS, 1);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         setItemMeta(meta);
+    }
+
+    public static boolean handIsValidMaterial(Player player) {
+        return isValidMaterial(player.getInventory().getItemInMainHand());
     }
 
     public static boolean isValidMaterial(ItemStack itemStack) {
