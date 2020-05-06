@@ -18,7 +18,7 @@ public class StandsPlus extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        StandKey.addRecipe();
+        addRecipes();
         menuListener = new GenericMenuListener(this);
         getServer().getPluginManager().registerEvents(new PlayerInteractListener(this), this);
     }
@@ -38,5 +38,15 @@ public class StandsPlus extends JavaPlugin {
 
     public Reader getTextResourceFile(String fileName) {
         return getTextResource(fileName);
+    }
+
+    private void addRecipes() {
+        try {
+            Bukkit.addRecipe(StandKey.getRecipe());
+        } catch (IllegalStateException e) {
+            if (!e.getMessage().startsWith("Duplicate recipe ignored")) {
+                e.printStackTrace();
+            }
+        }
     }
 }
