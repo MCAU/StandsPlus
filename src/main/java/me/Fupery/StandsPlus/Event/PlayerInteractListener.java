@@ -17,6 +17,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 /**
@@ -35,6 +37,11 @@ public class PlayerInteractListener implements Listener {
         if (StandKey.isValidMaterial(event.getPlayer().getInventory().getItemInMainHand())) {
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 event.setCancelled(true);
+                for(Entity armour : event.getPlayer().getNearbyEntities(10, 10, 10)) {
+                    if (armour instanceof ArmorStand) {
+                        ((ArmorStand) armour).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 40, 1));
+                    }
+                }
             }
         }
     }
@@ -68,7 +75,7 @@ public class PlayerInteractListener implements Listener {
     }
 
     private boolean checkValidStand(Entity entity) {
-        return entity.getType() == EntityType.ARMOR_STAND && ((ArmorStand) entity).isVisible();
+        return entity.getType() == EntityType.ARMOR_STAND /*&& ((ArmorStand) entity).isVisible()*/;
     }
 
     private void handleClick(Cancellable event, Player player, Entity clicked) {
