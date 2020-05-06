@@ -4,6 +4,7 @@ import me.Fupery.StandsPlus.GUI.StandMenu;
 import me.Fupery.StandsPlus.Recipe.StandKey;
 import me.Fupery.StandsPlus.StandsPlus;
 import me.Fupery.StandsPlus.Utils.SoundCompat;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -79,8 +80,11 @@ public class PlayerInteractListener implements Listener {
     private void handleClick(Cancellable event, Player player, Entity clicked) {
         if (checkValidStand(clicked) && StandKey.handIsValidMaterial(player)) {
             event.setCancelled(true);
-            new StandMenu(plugin, ((ArmorStand) clicked)).open(plugin, player);
             new SoundCompat(Sound.BLOCK_WOODEN_BUTTON_CLICK_ON).play(player);
+            Bukkit.getScheduler().runTaskLater(
+                    plugin,
+                    () -> new StandMenu(plugin, ((ArmorStand) clicked)).open(plugin, player),
+                    10);
         }
     }
 }
