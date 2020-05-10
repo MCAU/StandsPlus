@@ -7,7 +7,6 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -37,7 +36,7 @@ public class StandCrate extends ItemStack {
                 && itemStack.getItemMeta().hasLore() && itemStack.getItemMeta().getLore().get(0).equals(STAND_CRATE);
     }
 
-    public static Recipe getRecipe() {
+    public static ShapedRecipe getRecipe() {
         ShapedRecipe recipe = new ShapedRecipe(key, new StandCrate());
         recipe.shape(".w.", "sxs", ".w.");
         recipe.setIngredient('w', Material.COBWEB);

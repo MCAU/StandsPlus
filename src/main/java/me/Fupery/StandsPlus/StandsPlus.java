@@ -6,6 +6,7 @@ import me.Fupery.StandsPlus.GUI.API.InventoryMenu;
 import me.Fupery.StandsPlus.Recipe.StandKey;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.Reader;
@@ -18,7 +19,7 @@ public class StandsPlus extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        addRecipes();
+        addRecipe(StandKey.getRecipe());
         menuListener = new GenericMenuListener(this);
         getServer().getPluginManager().registerEvents(new PlayerInteractListener(this), this);
     }
@@ -40,13 +41,8 @@ public class StandsPlus extends JavaPlugin {
         return getTextResource(fileName);
     }
 
-    private void addRecipes() {
-        try {
-            Bukkit.addRecipe(StandKey.getRecipe());
-        } catch (IllegalStateException e) {
-            if (!e.getMessage().startsWith("Duplicate recipe ignored")) {
-                e.printStackTrace();
-            }
-        }
+    private void addRecipe(ShapedRecipe recipe) {
+        Bukkit.removeRecipe(recipe.getKey());
+        Bukkit.addRecipe(recipe);
     }
 }
