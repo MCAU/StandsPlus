@@ -49,11 +49,15 @@ public class PlayerInteractListener implements Listener {
     public void onPlayerDamageEntity(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player && checkValidStand(event.getEntity())) {
             Player player = ((Player) event.getDamager());
-            ArmorStand stand = ((ArmorStand) event.getEntity());
             if (StandKey.handIsValidMaterial(player)) {
                 event.setCancelled(true);
+                ArmorStand stand = ((ArmorStand) event.getEntity());
                 Vector vecDiff = stand.getLocation().toVector().subtract(player.getLocation().toVector());
                 Vector vector = vecDiff.normalize().multiply(.1);
+                if (player.isSneaking()) {
+                    vector = vector.multiply(.1);
+                }
+
                 if (stand.hasGravity()) {
                     stand.setVelocity(vector);
                 } else {
