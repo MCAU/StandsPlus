@@ -18,6 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.EulerAngle;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 class PartMenu extends InventoryMenu {
     private final StandPart part;
@@ -50,13 +51,30 @@ class PartMenu extends InventoryMenu {
         double shift = Math.toRadians(axisAngle);
         switch (axis) {
             case X:
-                newAngle = new EulerAngle(angle.getX() + shift, angle.getY(), angle.getZ());
+                newAngle = angle.add(shift, 0, 0);
                 break;
             case Y:
-                newAngle = new EulerAngle(angle.getX(), angle.getY() + shift, angle.getZ());
+                newAngle = angle.add(0, shift, 0);
                 break;
             case Z:
-                newAngle = new EulerAngle(angle.getX(), angle.getY(), angle.getZ() + shift);
+                newAngle = angle.add(0, 0, shift);
+                break;
+        }
+        part.pose(getStand(), newAngle);
+    }
+
+    private void resetAngle(Axis axis) {
+        EulerAngle angle = part.getPose(getStand());
+        EulerAngle newAngle = null;
+        switch (axis) {
+            case X:
+                newAngle = angle.setX(0);
+                break;
+            case Y:
+                newAngle = angle.setY(0);
+                break;
+            case Z:
+                newAngle = angle.setZ(0);
                 break;
         }
         part.pose(getStand(), newAngle);
@@ -84,8 +102,8 @@ class PartMenu extends InventoryMenu {
                 default:
                     axisAngle = 0;
             }
-            BigDecimal dec = new BigDecimal(axisAngle);
-            dec = dec.setScale(2, BigDecimal.ROUND_HALF_UP);
+            BigDecimal dec = BigDecimal.valueOf(axisAngle);
+            dec = dec.setScale(2, RoundingMode.HALF_UP);
             return ChatColor.GREEN + name() + Lang.AXIS.message() + dec.doubleValue();
         }
     }
@@ -93,7 +111,7 @@ class PartMenu extends InventoryMenu {
     private class RotationButton extends MenuButton {
         private Axis axis;
 
-        RotationButton(Axis axis) {
+        private RotationButton(Axis axis) {
             super(Material.COMPASS, Lang.Array.POSE_BUTTON.messages());
             this.axis = axis;
             updateButton();
@@ -101,6 +119,11 @@ class PartMenu extends InventoryMenu {
 
         @Override
         public void onClick(JavaPlugin plugin, Player player, ClickType click) {
+            if (click == ClickType.MIDDLE) {
+                handleClick(plugin, player, () ->  resetAngle(axis));
+                return;
+            }
+
             double shift;
             if (click == ClickType.LEFT) {
                 shift = 10;
@@ -114,21 +137,29 @@ class PartMenu extends InventoryMenu {
                 shift = 0;
             }
             if (shift != 0) {
-                Bukkit.getScheduler().runTask(plugin, () -> {
-                    updateAngle(axis, shift);
-                    updateButton();
-                    updateInventory(plugin, player);
-                    new SoundCompat(Sound.UI_BUTTON_CLICK).play(player);
-                });
+                handleClick(plugin, player, () -> updateAngle(axis, shift));
             }
         }
 
-        void updateButton() {
+        private void updateButton() {
             ItemMeta meta = getItemMeta();
             EulerAngle angle = part.getPose(((StandMenu) parent).getStand());
             meta.setDisplayName(axis.getButtonText(angle));
             setItemMeta(meta);
         }
+
+        private void handleClick(JavaPlugin plugin, Player player, ClickLambda lambda) {
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                lambda.handle();
+                updateButton();
+                updateInventory(plugin, player);
+                new SoundCompat(Sound.UI_BUTTON_CLICK).play(player);
+            });
+        }
+    }
+
+    private interface ClickLambda {
+        void handle();
     }
 }
 
