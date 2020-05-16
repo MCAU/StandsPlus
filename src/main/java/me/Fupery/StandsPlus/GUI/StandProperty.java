@@ -6,7 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 
 enum StandProperty {
-    VISIBLE(Lang.VISIBLE.message(), Lang.VISIBLE_DESCRIPTION.message(), Material.GLASS_BOTTLE),
+    VISIBLE(Lang.VISIBLE.message(), Lang.VISIBLE_DESCRIPTION.message(), Material.POTION),
     GRAVITY(Lang.GRAVITY.message(), Lang.GRAVITY_DESCRIPTION.message(), Material.FEATHER),
     BASEPLATE(Lang.BASEPLATE.message(), Lang.BASEPLATE_DESCRIPTION.message(), Material.STONE_PRESSURE_PLATE),
     ARMS(Lang.ARMS.message(), Lang.ARMS_DESCRIPTION.message(), Material.STICK),

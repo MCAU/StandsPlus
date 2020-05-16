@@ -33,20 +33,27 @@ public class StandMenu extends InventoryMenu {
         this.stand = stand;
         this.plugin = plugin;
 
-        addButton(3, new RotateStandButton());
+        addButton(0, new RotateStandButton());
+        addButton(9, new PropertyButton(StandProperty.ARMS));
+        addButton(18, new PropertyButton(StandProperty.BASEPLATE));
+
+
         addButton(4, new PartButton(Material.CHAINMAIL_HELMET, StandPart.HEAD));
-        addButton(5, new PropertyButton(StandProperty.ARMS));
-
-        addButton(12, new PartButton(Material.LEVER, StandPart.LEFT_ARM));
+        addButton(12, new PartButton(Material.REDSTONE_TORCH, StandPart.LEFT_ARM));
         addButton(13, new PartButton(Material.CHAINMAIL_CHESTPLATE, StandPart.BODY));
-        addButton(14, new PartButton(Material.LEVER, StandPart.RIGHT_ARM));
-
-        addButton(21, new PropertyButton(StandProperty.GRAVITY));
+        addButton(14, new PartButton(Material.REDSTONE_TORCH, StandPart.RIGHT_ARM));
         addButton(22, new LegButton());
-        addButton(23, new PropertyButton(StandProperty.BASEPLATE));
 
-        addButton(18, new PropertyButton(StandProperty.VISIBLE));
-        addButton(19, new PropertyButton(StandProperty.SMALL));
+
+        addButton(8, new PropertyButton(StandProperty.VISIBLE));
+        addButton(17, new PropertyButton(StandProperty.SMALL));
+        addButton(26, new PropertyButton(StandProperty.GRAVITY));
+
+        for (int i = 0; i < buttons.length; i++) {
+            if (buttons[i] == null) {
+                buttons[i] = new MenuButton.StaticButton(Material.GRAY_STAINED_GLASS_PANE, " ");
+            }
+        }
     }
 
     @Override
