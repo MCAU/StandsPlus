@@ -22,21 +22,23 @@ english:
   TOGGLE_OFF: "Off"
 
   POSE_MENU_HELP:
-    - "§a§l•§e§lPose Menu§a§l•"
+    - "§a§l• §e§lPose Menu §a§l•"
     - "§7Click the compasses to rotate"
   POSE_BUTTON:
     - ""
-    - "§7Left-Click to increase angle"
-    - "§7Right-Click to decrease angle"
-    - "§7Middle-Click to reset angle"
-    - "§eHold shift to rotate slowly"
+    - "§aLeft-Click §7to §aincrease angle"
+    - "§eRight-Click §7to §edecrease angle"
+    - "§cMiddle-Click §7to §creset angle"
+    - "§7Hold shift to rotate slowly"
 
   LEGS_BUTTON:
   - "§e•§6 Legs §e•"
-  - "§aLeft-Click §7to rotate §aLeft Leg"
-  - "§eRight-Click §7to rotate §eRight Leg"
+  - "§aLeft-Click §7to rotate §aleft leg"
+  - "§eRight-Click §7to rotate §eright leg"
 
-  ARMS_BUTTON:
-  - "§e•§6 Arms §e•"
-  - "§aLeft-Click §7to rotate §aLeft Arm"
-  - "§eRight-Click §7to rotate §eRight Arm"
+  STAND_BUTTON:
+  - "§e•§6 Stand §e•"
+  - "§aLeft-Click §7to §arotate clockwise"
+  - "§eRight-Click §7to §erotate counter-clockwise"
+  - "§cMiddle-Click §7to §creset"
+  - "§7Hold shift to rotate slowly"

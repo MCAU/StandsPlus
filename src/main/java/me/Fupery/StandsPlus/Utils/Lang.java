@@ -36,7 +36,7 @@ public enum Lang {
     }
 
     public enum Array {
-        POSE_MENU_HELP, POSE_BUTTON, LEGS_BUTTON, ARMS_BUTTON;
+        POSE_MENU_HELP, POSE_BUTTON, LEGS_BUTTON, STAND_BUTTON;
 
         String[] messages;
 

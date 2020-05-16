@@ -7,6 +7,7 @@ import me.Fupery.StandsPlus.Utils.Lang;
 import me.Fupery.StandsPlus.Utils.SoundCompat;
 import me.Fupery.StandsPlus.Utils.StandPart;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
@@ -14,6 +15,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -27,23 +29,24 @@ public class StandMenu extends InventoryMenu {
     private boolean switchingMenus = false;
 
     public StandMenu(StandsPlus plugin, ArmorStand stand) {
-        super(null, ChatColor.BOLD + Lang.STAND_MENU_TITLE.message(), InventoryType.DISPENSER);
+        super(null, ChatColor.BOLD + Lang.STAND_MENU_TITLE.message(), InventoryType.CHEST);
         this.stand = stand;
-        MenuButton[] buttons = new MenuButton[]{
-                new PropertyButton(StandProperty.BASEPLATE),
-                new PartButton(Material.CHAINMAIL_HELMET, StandPart.HEAD),
-                new PropertyButton(StandProperty.ARMS),
-
-                new PropertyButton(StandProperty.VISIBLE),
-                new PartButton(Material.CHAINMAIL_CHESTPLATE, StandPart.BODY),
-                new ArmButton(),
-
-                new PropertyButton(StandProperty.GRAVITY),
-                new LegButton(),
-                new PropertyButton(StandProperty.SMALL)
-        };
         this.plugin = plugin;
-        addButtons(buttons);
+
+        addButton(3, new RotateStandButton());
+        addButton(4, new PartButton(Material.CHAINMAIL_HELMET, StandPart.HEAD));
+        addButton(5, new PropertyButton(StandProperty.ARMS));
+
+        addButton(12, new PartButton(Material.LEVER, StandPart.LEFT_ARM));
+        addButton(13, new PartButton(Material.CHAINMAIL_CHESTPLATE, StandPart.BODY));
+        addButton(14, new PartButton(Material.LEVER, StandPart.RIGHT_ARM));
+
+        addButton(21, new PropertyButton(StandProperty.GRAVITY));
+        addButton(22, new LegButton());
+        addButton(23, new PropertyButton(StandProperty.BASEPLATE));
+
+        addButton(18, new PropertyButton(StandProperty.VISIBLE));
+        addButton(19, new PropertyButton(StandProperty.SMALL));
     }
 
     @Override
@@ -83,7 +86,6 @@ public class StandMenu extends InventoryMenu {
     }
 
     private class PartButton extends MenuButton {
-
         private StandPart part;
 
         PartButton(Material type, StandPart part) {
@@ -100,26 +102,6 @@ public class StandMenu extends InventoryMenu {
         public void onClick(JavaPlugin plugin, Player player, ClickType click) {
             switchingMenus = true;
             new PartMenu(getMenu(), part).open(plugin, player);
-        }
-    }
-
-    private class ArmButton extends MenuButton {
-        ArmButton() {
-            super(Material.LEVER, Lang.Array.ARMS_BUTTON.messages());
-            ItemMeta meta = getItemMeta();
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-            setItemMeta(meta);
-        }
-
-        @Override
-        public void onClick(JavaPlugin plugin, Player player, ClickType click) {
-            switchingMenus = true;
-            if (click.isLeftClick()) {
-                new PartMenu(getMenu(), StandPart.LEFT_ARM).open(plugin, player);
-            } else if (click.isRightClick()) {
-                new PartMenu(getMenu(), StandPart.RIGHT_ARM).open(plugin, player);
-            }
         }
     }
 
@@ -144,7 +126,6 @@ public class StandMenu extends InventoryMenu {
     }
 
     private class PropertyButton extends MenuButton {
-
         boolean value;
         StandProperty property;
 
@@ -181,6 +162,37 @@ public class StandMenu extends InventoryMenu {
             ItemMeta meta = getItemMeta();
             meta.setDisplayName(property.getButtonTitle(value));
             setItemMeta(meta);
+        }
+    }
+
+    private class RotateStandButton extends MenuButton {
+        RotateStandButton() {
+            super(Material.ARMOR_STAND, Lang.Array.STAND_BUTTON.messages());
+            ItemMeta meta = getItemMeta();
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+            setItemMeta(meta);
+        }
+
+        @Override
+        public void onClick(JavaPlugin plugin, Player player, ClickType click) {
+            Location loc = stand.getLocation();
+            float yaw = loc.getYaw();
+
+            if (click == ClickType.MIDDLE) {
+                yaw = 0;
+            } else {
+                int increment = click.isShiftClick() ? 1 : 15;
+                if (click.isLeftClick()) {
+                    yaw = (yaw + increment) % 360;
+                } else if (click.isRightClick()) {
+                    yaw = (yaw + 360 - increment) % 360;
+                }
+            }
+
+            loc.setYaw(yaw);
+            stand.teleport(loc, PlayerTeleportEvent.TeleportCause.PLUGIN);
         }
     }
 }
