@@ -35,11 +35,6 @@ class PartMenu extends InventoryMenu {
     }
 
     @Override
-    public void open(JavaPlugin plugin, Player player) {
-        super.open(plugin, player);
-    }
-
-    @Override
     public void close(Player player) {
         super.close(player);
         ((StandMenu) parent).stopEditing();
@@ -109,7 +104,7 @@ class PartMenu extends InventoryMenu {
     }
 
     private class RotationButton extends MenuButton {
-        private Axis axis;
+        private final Axis axis;
 
         private RotationButton(Axis axis) {
             super(Material.COMPASS, Lang.Array.POSE_BUTTON.messages());
@@ -162,4 +157,3 @@ class PartMenu extends InventoryMenu {
         void handle();
     }
 }
-

@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 
-enum StandProperty {
+public enum StandProperty {
     VISIBLE(Lang.VISIBLE.message(), Lang.VISIBLE_DESCRIPTION.message(), Material.POTION),
     GRAVITY(Lang.GRAVITY.message(), Lang.GRAVITY_DESCRIPTION.message(), Material.FEATHER),
     BASEPLATE(Lang.BASEPLATE.message(), Lang.BASEPLATE_DESCRIPTION.message(), Material.STONE_PRESSURE_PLATE),
@@ -22,12 +22,12 @@ enum StandProperty {
         this.icon = icon;
     }
 
-    String getButtonTitle(boolean value) {
+    public String getButtonTitle(boolean value) {
         return String.format("%s: %s", ChatColor.GOLD + propertyName,
                 value ? ChatColor.GREEN + Lang.TOGGLE_ON.message() : ChatColor.RED + Lang.TOGGLE_OFF.message());
     }
 
-    void apply(ArmorStand stand, boolean value) {
+    public void apply(ArmorStand stand, boolean value) {
         switch (this) {
             case VISIBLE:
                 stand.setVisible(value);
@@ -47,7 +47,7 @@ enum StandProperty {
         }
     }
 
-    boolean getValue(ArmorStand stand) {
+    public boolean getValue(ArmorStand stand) {
         switch (this) {
             case VISIBLE:
                 return stand.isVisible();

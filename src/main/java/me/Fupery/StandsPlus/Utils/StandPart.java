@@ -8,14 +8,16 @@ public enum StandPart {
     HEAD, BODY, LEFT_ARM, RIGHT_ARM, LEFT_LEG, RIGHT_LEG;
 
     public String fancyName(boolean colour) {
-        String name = "";
+        StringBuilder name = new StringBuilder();
         String[] words = name().toLowerCase().split("_");
         for (int i = 0; i < words.length; i++) {
             String word = words[i];
-            name += word.substring(0, 1).toUpperCase() + word.substring(1);
-            if (i < words.length - 1) name += " ";
+            name.append(word.substring(0, 1).toUpperCase()).append(word.substring(1));
+            if (i < words.length - 1) {
+                name.append(" ");
+            }
         }
-        return colour ? "§e•§6 " + name + " §e•" : ChatColor.BOLD + Lang.EDITING.message() + name;
+        return colour ? "§e•§6 " + name.toString() + " §e•" : ChatColor.BOLD + Lang.EDITING.message() + name.toString();
     }
 
     public void pose(ArmorStand stand, EulerAngle angle) {

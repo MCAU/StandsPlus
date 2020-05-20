@@ -42,3 +42,10 @@ english:
   - "§eRight-Click §7to §erotate counter-clockwise"
   - "§cMiddle-Click §7to §creset"
   - "§7Hold shift to rotate slowly"
+
+  COPY_BUTTON:
+  - "§6Copy"
+  - "§eClick to copy this stand's pose"
+  PASTE_BUTTON:
+  - "§6Paste"
+  - "§eClick to paste the copied pose"

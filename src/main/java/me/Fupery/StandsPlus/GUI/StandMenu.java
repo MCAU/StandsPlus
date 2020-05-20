@@ -6,6 +6,8 @@ import me.Fupery.StandsPlus.StandsPlus;
 import me.Fupery.StandsPlus.Utils.Lang;
 import me.Fupery.StandsPlus.Utils.SoundCompat;
 import me.Fupery.StandsPlus.Utils.StandPart;
+import me.Fupery.StandsPlus.Utils.StorageUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -37,13 +39,14 @@ public class StandMenu extends InventoryMenu {
         addButton(9, new PropertyButton(StandProperty.ARMS));
         addButton(18, new PropertyButton(StandProperty.BASEPLATE));
 
-
         addButton(4, new PartButton(Material.CHAINMAIL_HELMET, StandPart.HEAD));
         addButton(12, new PartButton(Material.REDSTONE_TORCH, StandPart.LEFT_ARM));
         addButton(13, new PartButton(Material.CHAINMAIL_CHESTPLATE, StandPart.BODY));
         addButton(14, new PartButton(Material.REDSTONE_TORCH, StandPart.RIGHT_ARM));
         addButton(22, new LegButton());
 
+        addButton(24, new CopyButton());
+        addButton(25, new PasteButton());
 
         addButton(8, new PropertyButton(StandProperty.VISIBLE));
         addButton(17, new PropertyButton(StandProperty.SMALL));
@@ -175,11 +178,6 @@ public class StandMenu extends InventoryMenu {
     private class RotateStandButton extends MenuButton {
         RotateStandButton() {
             super(Material.ARMOR_STAND, Lang.Array.STAND_BUTTON.messages());
-            ItemMeta meta = getItemMeta();
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-            meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
-            setItemMeta(meta);
         }
 
         @Override
@@ -200,6 +198,29 @@ public class StandMenu extends InventoryMenu {
 
             loc.setYaw(yaw);
             stand.teleport(loc, PlayerTeleportEvent.TeleportCause.PLUGIN);
+        }
+    }
+
+    private class CopyButton extends MenuButton {
+        CopyButton() {
+            super(Material.LAVA_BUCKET, Lang.Array.COPY_BUTTON.messages());
+        }
+
+        @Override
+        public void onClick(JavaPlugin plugin, Player player, ClickType click) {
+            StorageUtil.store(player, stand);
+            Bukkit.getScheduler().runTask(plugin, () -> getMenu().close(player));
+        }
+    }
+
+    private class PasteButton extends MenuButton {
+        PasteButton() {
+            super(Material.BUCKET, Lang.Array.PASTE_BUTTON.messages());
+        }
+
+        @Override
+        public void onClick(JavaPlugin plugin, Player player, ClickType click) {
+            StorageUtil.apply(player, stand);
         }
     }
 }
