@@ -21,6 +21,8 @@ english:
   TOGGLE_ON: "On"
   TOGGLE_OFF: "Off"
 
+  DAMAGE_DENY_SMALL: "§cCannot destroy small Armor Stands"
+
   POSE_MENU_HELP:
     - "§a§l• §e§lPose Menu §a§l•"
     - "§7Click the compasses to rotate"

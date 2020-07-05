@@ -3,6 +3,7 @@ package me.Fupery.StandsPlus.Event;
 import me.Fupery.StandsPlus.GUI.StandMenu;
 import me.Fupery.StandsPlus.Recipe.StandKey;
 import me.Fupery.StandsPlus.StandsPlus;
+import me.Fupery.StandsPlus.Utils.Lang;
 import me.Fupery.StandsPlus.Utils.SoundCompat;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -48,21 +49,16 @@ public class PlayerInteractListener implements Listener {
     @EventHandler
     public void onPlayerDamageEntity(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player && checkValidStand(event.getEntity())) {
+            ArmorStand stand = ((ArmorStand) event.getEntity());
             Player player = ((Player) event.getDamager());
             if (StandKey.handIsValidMaterial(player)) {
                 event.setCancelled(true);
-                ArmorStand stand = ((ArmorStand) event.getEntity());
-                Vector vecDiff = stand.getLocation().toVector().subtract(player.getLocation().toVector());
-                Vector vector = vecDiff.normalize().multiply(.1);
-                if (player.isSneaking()) {
-                    vector = vector.multiply(.1);
-                }
-
-                if (stand.hasGravity()) {
-                    stand.setVelocity(vector);
-                } else {
-                    stand.teleport(stand.getLocation().add(vector));
-                }
+                pushStand(stand, player);
+            }
+            else if (stand.isSmall()) {
+                // Patch for breaking small armor stands - they don't drop anything in vanilla
+                event.setCancelled(true);
+                player.sendMessage(Lang.DAMAGE_DENY_SMALL.message());
             }
         }
     }
@@ -89,6 +85,20 @@ public class PlayerInteractListener implements Listener {
                     plugin,
                     () -> new StandMenu(plugin, ((ArmorStand) clicked)).open(plugin, player),
                     10);
+        }
+    }
+
+    private void pushStand(ArmorStand stand, Player player) {
+        Vector vecDiff = stand.getLocation().toVector().subtract(player.getLocation().toVector());
+        Vector vector = vecDiff.normalize().multiply(.1);
+        if (player.isSneaking()) {
+            vector = vector.multiply(.1);
+        }
+
+        if (stand.hasGravity()) {
+            stand.setVelocity(vector);
+        } else {
+            stand.teleport(stand.getLocation().add(vector));
         }
     }
 }
